@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador de Inversiones a Plazo Fijo MGM</title>
+  <style>
+    :root {
+      --fondo: #0a1128;
+      --input-bg: #1c2541;
+      --text-color: #ffffff;
+      --highlight: #00b4d8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--fondo);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: var(--highlight);
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    select, input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 0.5rem;
+      border-radius: 10px;
+      border: none;
+      background: var(--input-bg);
+      color: white;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      background: var(--highlight);
+      color: #fff;
+      padding: 14px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+      background-color: var(--input-bg);
+    }
+
+    th {
+      background-color: #14213d;
+      color: var(--highlight);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      select, input, button {
+        font-size: 0.95rem;
+      }
+
+      th, td {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Simulador de Inversiones a Plazo Fijo MGM</h1>
+    
+
+    <label for="institucion">Selecciona la institución financiera:<br><small>La tasa de interés varía según la institución financiera seleccionada.</small></label>
+    <select id="institucion">
+      <optgroup label="Bancos">
+        <option value="0.062">Banco Pichincha (6.2%)</option>
+        <option value="0.058">Banco Guayaquil (5.8%)</option>
+        <option value="0.060">Banco Pacífico (6.0%)</option>
+        <option value="0.057">Produbanco (5.7%)</option>
+        <option value="0.059">Banco Internacional (5.9%)</option>
+      </optgroup>
+      <optgroup label="Cooperativas">
+        <option value="0.075">COOP. JEP (7.5%)</option>
+        <option value="0.072">COOP. Policía Nacional (7.2%)</option>
+        <option value="0.073">COOP. Andalucía (7.3%)</option>
+        <option value="0.074">COOP. Oscus (7.4%)</option>
+        <option value="0.076">COOP. San Francisco (7.6%)</option>
+      </optgroup>
+    </select>
+
+    <label for="monto">Monto de inversión (USD):<br><small>Es el monto que desea invertir. Ej: 1000 USD.</small></label>
+    <input type="number" id="monto" placeholder="Ej: 1000" />
+
+    <label for="plazo">Plazo en meses:<br><small>Plazo durante el cual mantendrá la inversión. Ej: 12 meses.</small></label>
+    <input type="number" id="plazo" placeholder="Ej: 12" />
+
+    <button onclick="calcularRendimiento()">Calcular</button>
+
+    
+    <div id="resultado"></div>
+    
+    
+  </div>
+
+  
+
+
+<script>
+    function calcularRendimiento() {
+      const tasa = parseFloat(document.getElementById('institucion').value);
+      const monto = parseFloat(document.getElementById('monto').value);
+      const plazo = parseInt(document.getElementById('plazo').value);
+      const resultado = document.getElementById('resultado');
+
+      if (isNaN(tasa) || isNaN(monto) || isNaN(plazo)) {
+        resultado.innerHTML = '<p style="color: red;">Por favor, completa todos los campos correctamente.</p>';
+        return;
+      }
+
+      const interes = monto * tasa * (plazo / 12);
+      const total = monto + interes;
+      const rendimientoMensual = interes / plazo;
+
+      resultado.innerHTML = `
+        <table>
+          <tr><th>Capital Invertido</th><td>$${monto.toFixed(2)}</td></tr>
+          <tr><th>Interés Ganado</th><td>$${interes.toFixed(2)}</td></tr>
+          <tr><th>Total a Recibir</th><td>$${total.toFixed(2)}</td></tr>
+          <tr><th>Recuperación</th><td>En ${plazo} meses</td></tr>
+          <tr><th>Rendimiento mensual</th><td>$${rendimientoMensual.toFixed(2)}</td></tr>
+        </table>`;
+    }
+</script>
+
+</body>
+</html>
